@@ -1,3 +1,3 @@
-# terraform-azurerm-avm-res-keyvault-vault
+# terraform-azure-subscription-zonepeers
 
-Module to deploy key vaults, keys and secrets in Azure.
+This module is used to get the zone peers for a given subscription vs. a set of other subscriptions.

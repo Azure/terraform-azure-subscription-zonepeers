@@ -1,26 +1,30 @@
 <!-- BEGIN_TF_DOCS -->
 # Default example
 
-This example shows how to deploy the module in its simplest configuration.
+This example shows how get the zone peers for a given subscription vs. another subscription.
 
 ```hcl
 variable "this_subscription_id" {
   type = string
 }
 
-variable "other_subscription_ids" {
-  type = set(string)
+variable "other_subscription_id" {
+  type = string
 }
 
 module "zone_peers_westus2" {
   source                 = "../../"
   this_subscription_id   = var.this_subscription_id
-  location               = "westus2"
-  other_subscription_ids = var.other_subscription_ids
+  location               = "northeurope"
+  other_subscription_ids = [var.other_subscription_id]
 }
 
 output "response" {
   value = module.zone_peers_westus2.response
+}
+
+output "equiv_az_1" {
+  value = module.zone_peers_westus2.response["1"][var.other_subscription_id].zone
 }
 ```
 
@@ -42,11 +46,11 @@ No resources.
 
 The following input variables are required:
 
-### <a name="input_other_subscription_ids"></a> [other\_subscription\_ids](#input\_other\_subscription\_ids)
+### <a name="input_other_subscription_id"></a> [other\_subscription\_id](#input\_other\_subscription\_id)
 
 Description: n/a
 
-Type: `set(string)`
+Type: `string`
 
 ### <a name="input_this_subscription_id"></a> [this\_subscription\_id](#input\_this\_subscription\_id)
 
@@ -61,6 +65,10 @@ No optional inputs.
 ## Outputs
 
 The following outputs are exported:
+
+### <a name="output_equiv_az_1"></a> [equiv\_az\_1](#output\_equiv\_az\_1)
+
+Description: n/a
 
 ### <a name="output_response"></a> [response](#output\_response)
 

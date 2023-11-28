@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# terraform-azurerm-avm-res-keyvault-vault
+# terraform-azure-subscription-zonepeers
 
-Module to deploy key vaults, keys and secrets in Azure.
+This module is used to get the zone peers for a given subscription vs. a set of other subscriptions.
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -68,11 +68,11 @@ module "zone_peers_westus2" {
   source                 = "../../"
   this_subscription_id   = var.this_subscription_id
   location               = "westus2"
-  other_subscription_ids = [var.other_subscription_ids]
+  other_subscription_ids = [var.other_subscription_id]
 }
 
 locals {
-  other_az = module.zone_peers_westus2.response.["1"].[var.other_subscription_id].zone
+  other_az = module.zone_peers_westus2.response["1"][var.other_subscription_id].zone
 }
 ```
 
