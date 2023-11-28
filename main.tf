@@ -34,7 +34,7 @@ module "zone_peers_westus2" {
 }
 
 locals {
-  other_az = module.zone_peers_westus2.response.["1"].["${var.other_subscription_id}"].zone
+  other_az = module.zone_peers_westus2.response.["1"].[var.other_subscription_id].zone
 }
 ```
 DESCRIPTION
