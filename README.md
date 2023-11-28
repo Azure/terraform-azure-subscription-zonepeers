@@ -3,6 +3,26 @@
 
 This module is used to get the zone peers for a given subscription vs. a set of other subscriptions.
 
+## `AvailabilityZonePeering` provider feature
+
+This module requires a provider feature to be registered in the subscription defined by `var.this_subscription_id`.
+
+```bash
+az feature register -n AvailabilityZonePeering --namespace Microsoft.Resources
+```
+
+Check registration status with:
+
+```bash
+az feature show -n AvailabilityZonePeering --namespace Microsoft.Resources
+```
+
+After this feature is registered, you should re-register the provider to propagate the change.
+
+```bash
+az provider register -n Microsoft.Resources
+```
+
 <!-- markdownlint-disable MD033 -->
 ## Requirements
 
@@ -16,7 +36,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azapi"></a> [azapi](#provider\_azapi) (1.10.0)
+- <a name="provider_azapi"></a> [azapi](#provider\_azapi) (>= 1.9.0, <= 2.0.0)
 
 ## Resources
 
