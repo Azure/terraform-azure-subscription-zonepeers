@@ -6,7 +6,7 @@ variable "other_subscription_ids" {
   type = set(string)
 }
 
-module "test" {
+module "zone_peers_westus2" {
   source                 = "../../"
   this_subscription_id   = var.this_subscription_id
   location               = "westus2"
@@ -14,5 +14,5 @@ module "test" {
 }
 
 output "response" {
-  value = module.test.response
+  value = module.zone_peers_westus2.response
 }
