@@ -15,7 +15,7 @@ variable "other_subscription_id" {
 module "zone_peers_westus2" {
   source                 = "../../"
   this_subscription_id   = var.this_subscription_id
-  location               = "northeurope"
+  location               = "westus2"
   other_subscription_ids = [var.other_subscription_id]
 }
 
@@ -23,8 +23,9 @@ output "response" {
   value = module.zone_peers_westus2.response
 }
 
-output "equiv_az_1" {
-  value = module.zone_peers_westus2.response["1"][var.other_subscription_id].zone
+# This ensures that the same physical zone is used in both subscriptions.
+output "equiv_of_az_1_in_other_subscription" {
+  value = module.zone_peers_westus2.response[var.other_subscription_id].zone["1"]
 }
 ```
 
@@ -66,9 +67,9 @@ No optional inputs.
 
 The following outputs are exported:
 
-### <a name="output_equiv_az_1"></a> [equiv\_az\_1](#output\_equiv\_az\_1)
+### <a name="output_equiv_of_az_1_in_other_subscription"></a> [equiv\_of\_az\_1\_in\_other\_subscription](#output\_equiv\_of\_az\_1\_in\_other\_subscription)
 
-Description: n/a
+Description: This ensures that the same physical zone is used in both subscriptions.
 
 ### <a name="output_response"></a> [response](#output\_response)
 

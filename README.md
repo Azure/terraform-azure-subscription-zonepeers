@@ -2,8 +2,34 @@
 # terraform-azure-subscription-zonepeers
 
 This module is used to get the zone peers for a given subscription vs. a set of other subscriptions.
+You need one instance of this module for each Azure location you want to query.
 
-## `AvailabilityZonePeering` provider feature
+```terraform
+module "zone_peers_westus2" {
+  source                 = "../../"
+  this_subscription_id   = var.this_subscription_id
+  location               = "westus2"
+  other_subscription_ids = [var.other_subscription_id]
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example"
+  location = "westus2"
+}
+
+# This places the resource in the same physical zone as the
+# resource deployed into logical zone 2 in the other subscription.
+resource "azurerm_public_ip" "example" {
+  name                = "example"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = [module.zone_peers_westus2.response[var.other_subscription_id].zone["2"]]
+}
+```
+
+## Required provider feature: `AvailabilityZonePeering`
 
 This module requires a provider feature to be registered in the subscription defined by `var.this_subscription_id`.
 
@@ -81,7 +107,7 @@ Description: A map of this subscription's availability zones, to a map of subscr
 
 E.g.
 
-To get the equivalent AZ `1` for another subscription in `westus2`, you can do:
+If you have a resource deployed in `var.other_subscription_id` in zone `1` in `var.location`, then you can get the equivalent zone in this subscription with:
 
 ```hcl
 module "zone_peers_westus2" {
@@ -92,7 +118,7 @@ module "zone_peers_westus2" {
 }
 
 locals {
-  other_az = module.zone_peers_westus2.response["1"][var.other_subscription_id].zone
+  this_sub_equiv_az = module.zone_peers_westus2.response[var.other_subscription_id].zone["1"]
 }
 ```
 
