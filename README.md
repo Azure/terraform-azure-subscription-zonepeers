@@ -29,6 +29,22 @@ resource "azurerm_public_ip" "example" {
 }
 ```
 
+## Example output
+
+A map keyed by the other subscription ids is returned. Each value is a map of the zones in the other subscription to the zone in the current subscription that is in the same physical zone.
+
+```terraform
+response = {
+  "00000000-0000-0000-0000-000000000000" = {   # Other subscription id
+    "zone" = {
+      "1" = 1    # Key "1" is the zone in the other subscription, value `1` is the zone in the current subscription
+      "2" = 3    # Key "2" is the zone in the other subscription, value `3` is the zone in the current subscription
+      "3" = 2    # Key "3" is the zone in the other subscription, value `2` is the zone in the current subscription
+    }
+  }
+}
+```
+
 ## Required provider feature: `AvailabilityZonePeering`
 
 This module requires a provider feature to be registered in the subscription defined by `var.this_subscription_id`.
